@@ -1,5 +1,5 @@
 <script setup>
-import { SPXAPI_URL } from '@/shared'
+import { getFieldAverage, SPXAPI_URL } from '@/shared'
 import { onMounted, ref } from 'vue'
 // import RocketsTimeline from './RocketsTimeline.vue'
 import Timeline from './Timeline.vue'
@@ -7,6 +7,8 @@ import Timeline from './Timeline.vue'
 const rockets_list = ref([])
 const launches_list = ref([])
 const rocketsLaunchDates = ref([])
+const rocketsAverageMass = ref(0)
+const rocketsAverageCostPerLaunch = ref(0)
 
 const getRocketLaunchDates = (rData) => {
   return rData.map((rd) => {
@@ -27,6 +29,9 @@ onMounted(() => {
     rockets_list.value = rocketsData
     launches_list.value = launchesData
     rocketsLaunchDates.value = getRocketLaunchDates(rocketsData)
+    const rocketsMassData = rocketsData.map((rd) => rd.mass || { kg: null })
+    rocketsAverageMass.value = getFieldAverage(rocketsMassData, 'kg')
+    rocketsAverageCostPerLaunch.value = getFieldAverage(rocketsData, 'cost_per_launch')
     console.log(responsesData)
   })
 })
@@ -41,7 +46,11 @@ onMounted(() => {
         >: {{ description }}
       </li>
     </ul>
-    <!-- <RocketsTimeline :rocketsHistory="rocketsLaunchDates"></RocketsTimeline> -->
+    <h4>Some rockets statistics</h4>
+    <ul>
+      <li>Average mass: {{ rocketsAverageMass }} kg</li>
+      <li>Average cost per launch: ${{ rocketsAverageCostPerLaunch }} USD</li>
+    </ul>
     <Timeline :data="rocketsLaunchDates"></Timeline>
   </div>
   <div>
