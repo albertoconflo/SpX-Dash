@@ -21,11 +21,16 @@ onMounted(() => {
 
 <template>
   <ul>
-    <li>
+    <!-- <li>
       <a href="#/rockets">No. of Rockets: {{ rockets }}</a>
     </li>
     <li>
       <a href="#/launches">No. of Launches: {{ launches }}</a>
+    </li> -->
+    <li>
+      <a href="#/rocketslaunches">
+        No. of Rockets: {{ rockets }} | No. of Launches: {{ launches }}
+      </a>
     </li>
     <li>
       <a href="#/starlink">No. of Starlinks: {{ starlink }}</a>
